@@ -1,0 +1,20 @@
+2025-12-13 08:48:45 ERROR abc FAILURE trying to access a directory
+2025-12-13 08:48:46 DEBUG Kani SUCCESS Executed a file
+2025-12-13 08:48:47 ERROR Ganesh FAILURE Read a file
+2025-12-13 08:48:48 DEBUG Ganesh SUCCESS Wrote to a file
+2025-12-13 08:48:49 INFO abc SUCCESS Modified a file
+2025-12-13 08:48:50 DEBUG abc SUCCESS Wrote to a file
+2025-12-13 08:48:51 ERROR Kani FAILURE Executed a file
+2025-12-13 08:48:52 INFO Shivani FAILURE Executed a file
+2025-12-13 08:48:53 INFO Ganesh FAILURE Modified a file
+2025-12-13 08:48:54 DEBUG Shivani FAILURE Changed Password
+2025-12-13 08:51:39 DEBUG abc FAILURE Read a file
+2025-12-13 08:51:40 WARN Kani SUCCESS Read a file
+2025-12-13 08:51:41 ERROR Shivani SUCCESS trying to access a directory
+2025-12-13 08:51:42 DEBUG Kani SUCCESS Executed a file
+2025-12-13 08:51:43 ERROR Kani SUCCESS Executed a file
+2025-12-13 08:51:44 DEBUG abc SUCCESS trying to access a directory
+2025-12-13 08:51:47 DEBUG Kani FAILURE Wrote to a file
+2025-12-13 08:51:48 WARN Kani FAILURE Executed a file
+2025-12-13 08:51:49 INFO def FAILURE Executed a file
+2025-12-13 08:51:50 ERROR def SUCCESS Changed Password
