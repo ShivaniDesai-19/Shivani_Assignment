@@ -157,52 +157,58 @@ class DepartmentReportGenerator {
         }
     }
 
+
    //key is Departement ID , value is Department report 
    //Department report has - totalCost , mostExpensiveService , resourceCount
 
+public Map<String, DepartmentReport> generateReport(List<UsageEvent> events) {
 
-    public Map<String, DepartmentReport> generateReport(List<UsageEvent> events) {
+    // Step 1: Group events by departmentId
+    Map<String, List<UsageEvent>> eventsByDept =
+            events.stream()
+                  .collect(Collectors.groupingBy(event -> event.getDepartmentId()));
 
-        return events.stream()
-            // Step 1: group events by departmentId
-            .collect(Collectors.groupingBy(
-                    event -> event.getDepartmentId(),
-                    // Step 2-4: for each department, create a DepartmentReport
-                    Collectors.collectingAndThen(
-                            Collectors.toList(),
-                            deptEvents -> {
-                                // Step 2: totalCost
-                                double totalCost = deptEvents.stream()
-                                        .mapToDouble(event -> calculateCost(event))
-                                        .sum();
+    Map<String, DepartmentReport> reportMap = new java.util.HashMap<>();
 
-                                // Step 3: resourceCount (unique resource IDs)
-                                long resourceCount = deptEvents.stream()
-                                        .map(event -> event.getResourceId())
-                                        .distinct()
-                                        .count();
+    // Process each department
+    for (Map.Entry<String, List<UsageEvent>> entry : eventsByDept.entrySet()) {
 
-                                // Step 4: mostExpensiveService
-                                Map<ServiceType, Double> costByService = deptEvents.stream()
-                                        .collect(Collectors.groupingBy(
-                                                event -> event.getServiceType(),
-                                                Collectors.summingDouble(event -> calculateCost(event))
-                                        ));
-                                ServiceType mostExpensiveService = Collections.max(
-                                        costByService.entrySet(),
-                                        Map.Entry.comparingByValue()
-                                ).getKey();
+        String department = entry.getKey();
+        List<UsageEvent> deptEvents = entry.getValue();
 
-                                // DepartmentReport object
-                                return new DepartmentReport(totalCost, mostExpensiveService, (int) resourceCount);
-                            }
-                    )
-            ));
+        // total cost
+        double totalCost = deptEvents.stream()
+                .mapToDouble(event -> calculateCost(event))
+                .sum();
+
+        // unique resource count
+        int resourceCount = (int) deptEvents.stream()
+                .map(event -> event.getResourceId())
+                .distinct()
+                .count();
+
+        // most expensive service
+        Map<ServiceType, Double> costByService =
+                deptEvents.stream()
+                        .collect(Collectors.groupingBy(
+                                event -> event.getServiceType(),
+                                Collectors.summingDouble(event -> calculateCost(event))
+                        ));
+
+        ServiceType mostExpensiveService =
+                Collections.max(costByService.entrySet(),
+                        Map.Entry.comparingByValue())
+                        .getKey();
+
+        reportMap.put(
+                department,
+                new DepartmentReport(totalCost, mostExpensiveService, resourceCount)
+        );
     }
 
-       
+    return reportMap;
+   }
 }
-
 
 
 
